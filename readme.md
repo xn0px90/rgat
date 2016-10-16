@@ -4,32 +4,36 @@ An instruction trace visualisation tool intended to help reverse engineers make 
 ## What is rgat?
 
 rgat uses dynamic binary instrumentation (courtesy of DynamoRIO) to produce graphs from running executables. 
-It creates static and animated visualisations in realtime to support types of analysis that might be a lot more cumbersome with 
+It creates static and animated visualisations in real-time to support types of analysis that might be a lot more cumbersome with 
 disassemblers and debuggers alone.
 
-[This page](https://github.com/ncatlin/rgat/wiki) explains what kind of things you can and can't do with it but basically it looks like this:
+[This page](https://github.com/ncatlin/rgat/wiki) explains what kind of things you can and can't do with it but basically, it looks like this:
 
 Live animation:
 
-![sample image](https://github.com/ncatlin/ncatlin/raw/master/firefox-live-small.gif)
+![image](https://github.com/ncatlin/ncatlin/raw/master/firefox-live-small.gif)
 
 Edge frequency Heatmap:
   
 ![gametime heatmap](https://github.com/ncatlin/ncatlin/raw/master/heatmapfront.png)
 
-Static view zoomed in to individual instructions:
+Static view zoomed into individual instructions:
 
-![Static view zoomed in to individual instructions](https://github.com/ncatlin/ncatlin/raw/master/frontpage1.png)
+![Static view zoomed into individual instructions](https://github.com/ncatlin/ncatlin/raw/master/frontpage1.png)
 
 You may also want a brief introduction to the [graph layout](https://github.com/ncatlin/rgat/wiki/Graph-Layout).
 
 ## Latest Version
 
-Version 0.2 is [here](https://github.com/ncatlin/rgat/raw/master/rgat-0.2.zip) for Windows x86 targets only, at the moment. Most of the file size is the included minimal DynamoRIO distribution.
+Version 0.3 is [here](https://github.com/ncatlin/rgat/raw/master/rgat-0.3.zip) for Windows x86 targets only, at the moment. Most of the file size is the included minimal DynamoRIO distribution.
 
-Significant changes in the trace generation from v 0.1.* mean that execution for many applications with tightly looping code is at least an order of magnitude faster.
+Replay is back with a significantly improved interface, including a progress control slider.
 
-Some features (replay, divergence) have been temporarily disabled as a result. See the [CHANGELOG](https://github.com/ncatlin/rgat/raw/master/CHANGELOG.txt) for further details. 
+Graph divergence is also back, but less precise.
+
+See the [CHANGELOG](https://github.com/ncatlin/rgat/raw/master/CHANGELOG.txt) for further details. 
+
+For the next version I plan to add support 64 bit executables.
 
 ## Download/Installation
 
@@ -37,21 +41,21 @@ It's built to depend on the Windows 10 Universal CRT so if you have a version lo
 
 Unzip it, run it.
 
-Try to execute something. If you get an error then you likely need to install the [Visual C++ Redistributable for Visual Studio 2012](https://www.microsoft.com/en-gb/download/details.aspx?id=30679), because reasons.
+Try to execute something. If you get an error then you likely need to install the [Visual C++ Redistributable for Visual Studio 2012](https://www.microsoft.com/en-gb/download/details.aspx?id=30679), because of reasons.
 
-It should create a default config file at start up, feel free to customise.
+It should create a default config file at start-up, feel free to customise.
 
 ## Running
 
 Virtual Machines and OpenGL do not get on well together. rgat works on VMWare Workstation with a Win 7 guest but it tends to crash VirtualBox. You can use it from the command line in environments without 3D capability and export the save file for analysis elsewhere.
 
-Run, save and load traces from the file menu. Other functionality should be reasonably self explanatory from the other menus.
+Run, save and load traces from the file menu. Other functionality should be reasonably self-explanatory from the other menus.
 
 run from the command line with -h to get a list of command line options. Ctrl-C will force rgat to save everything it has so far and quit.
 
 Graph navigation is intended to be similar to Google Earth: drag it with the mouse and zoom with the scroll wheel. Num pad 7,8,1 and 2 allow finer grained zoom control.
 
-Press 'n' to stop the stuff on the back of the sphere cluttering up your view, and 't' and 'm' to toggle instruction and dll text to the situation if the default's don't work for the situation.
+Press 'n' to stop the stuff on the back of the sphere cluttering up your view, and 't' and 'm' to toggle instruction and dll text to the situation if the defaults don't work for the situation.
 
 Use the arrow keys to stretch and compress the graph you are looking at. Turn off autoscaling in the options menu if rgat doesn't like it.
 
@@ -61,9 +65,9 @@ See [Issues](https://github.com/ncatlin/rgat/issues) and [Limitations](https://g
 
 ## Excuses
 
-This is an unstable preview release (0.1.1). I promise not to use that excuse for long. 
+This is an unstable preview release. I promise not to use that excuse when the basic functionality has been done. 
 
-It's reliance on DynamoRIO means that rgat suffers from all of the same limitations. 99% of problems you find will be my fault though.
+Its reliance on DynamoRIO means that rgat suffers from all of the same limitations. 99% of problems you find will be my fault, though.
 
 Instrumenting arbitrary code - especially malicious obfuscated code - tends to present a *lot* of edge cases.
 

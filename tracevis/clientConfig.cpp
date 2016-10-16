@@ -140,10 +140,21 @@ bool clientConfig::loadPreview()
 
 bool clientConfig::loadPaths()
 {
-	saveDir = string(al_get_config_value(alConfig, "Paths", "SAVE_PATH"));
-	DRDir = string(al_get_config_value(alConfig, "Paths", "DYNAMORIO_PATH"));
-	clientPath = string(al_get_config_value(alConfig, "Paths", "CLIENT_PATH"));
-	lastPath = string(al_get_config_value(alConfig, "Paths", "LAST_PATH"));
+	const char *savepath = al_get_config_value(alConfig, "Paths", "SAVE_PATH");
+	if (!savepath) return false;
+	saveDir = string(savepath);
+
+	savepath = al_get_config_value(alConfig, "Paths", "DYNAMORIO_PATH");
+	if (!savepath) return false;
+	DRDir = string(savepath);
+
+	savepath = al_get_config_value(alConfig, "Paths", "CLIENT_PATH");
+	if (!savepath) return false;
+	clientPath = string(savepath);
+
+	savepath = al_get_config_value(alConfig, "Paths", "LAST_PATH");
+	if (!savepath) return false;
+	lastPath = string(savepath);
 	return true;
 }
 
@@ -162,7 +173,7 @@ bool clientConfig::loadConditionals()
 bool clientConfig::loadHeatmap()
 {
 	int errorCount = 0;
-	argtoi(al_get_config_value(alConfig, "Heatmap", "DELAY_MS"), &heatmap.delay, &errorCount);
+	argtoi(al_get_config_value(alConfig, "Heatmap", "MS_BETWEEN_UPDATES"), &heatmap.delay, &errorCount);
 	charstr_to_col(al_get_config_value(alConfig, "Heatmap", "EDGE_TEXT_RGBA"), &heatmap.lineTextCol, &errorCount);
 	charstr_to_col(al_get_config_value(alConfig, "Heatmap", "EDGE_FREQ0_COL"), &heatmap.edgeFrequencyCol[0], &errorCount);
 	charstr_to_col(al_get_config_value(alConfig, "Heatmap", "EDGE_FREQ1_COL"), &heatmap.edgeFrequencyCol[1], &errorCount);
@@ -201,13 +212,17 @@ bool clientConfig::loadFromFile()
 	int errorCount = 0;
 	string cstrpath(configFilePath.begin(), configFilePath.end());
 	alConfig = al_load_config_file(cstrpath.c_str());
-	if (!alConfig) return false;
+	if (!alConfig) 
+		return false;
 
 	charstr_to_col(al_get_config_value(alConfig, "Wireframe", "COL_RGBA"), &wireframe.edgeColor, &errorCount);
 
-	if (!loadPreview()) return false;
-	if (!loadConditionals()) return false;
-	if (!loadHeatmap()) return false;
+	if (!loadPreview()) 
+		return false;
+	if (!loadConditionals()) 
+		return false;
+	if (!loadHeatmap()) 
+		return false;
 
 
 	argtoi(al_get_config_value(alConfig, "Dimensions", "FAR_A_LIMIT"), &farA, &errorCount);
@@ -221,14 +236,17 @@ bool clientConfig::loadFromFile()
 	argtouni(al_get_config_value(alConfig, "Misc", "MAINGRAPH_UPDATE_FREQUENCY_MS"), &renderFrequency, &errorCount);
 	argtounl(al_get_config_value(alConfig, "Misc", "TRACE_BUFFER_MAX"), &traceBufMax, &errorCount);
 	argtouni(al_get_config_value(alConfig, "Misc", "DEFAULT_MAX_ARG_STORAGE"), &maxArgStorage, &errorCount);
-	argtouni(al_get_config_value(alConfig, "Misc", "ANIM_MAX_WAIT_FRAMES"), &maxWaitFrames, &errorCount);
+	argtouni(al_get_config_value(alConfig, "Misc", "DEFAULT_MAX_WAIT_FRAMES"), &maxWaitFrames, &errorCount);
 
-	if (!loadColours()) return false;
-	if (!loadPaths()) return false;
+	if (!loadColours()) 
+		return false;
+	if (!loadPaths()) 
+		return false;
 
 	al_destroy_config(alConfig);
 
-	if (errorCount) return false;
+	if (errorCount) 
+		return false;
 	initialised = true;
 	return true;
 }
@@ -382,7 +400,6 @@ void clientConfig::saveToFile()
 	al_set_config_value(alConfig, "Misc", "TRACE_BUFFER_MAX", to_string(traceBufMax).c_str());
 	al_set_config_value(alConfig, "Misc", "DEFAULT_MAX_ARG_STORAGE", to_string(maxArgStorage).c_str());
 	al_set_config_value(alConfig, "Misc", "DEFAULT_MAX_WAIT_FRAMES", to_string(maxWaitFrames).c_str());
-	
 
 	al_set_config_value(alConfig, "Paths", "SAVE_PATH", saveDir.c_str());
 	al_set_config_value(alConfig, "Paths", "DYNAMORIO_PATH", DRDir.c_str());
